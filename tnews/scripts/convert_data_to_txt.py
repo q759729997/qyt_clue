@@ -6,12 +6,11 @@ import codecs
 import os
 import sys
 
-from fastNLP import logger
-
 sys.path.insert(0, './')  # 定义搜索路径的优先顺序，序号从0开始，表示最大优先级
 
 import myClue  # noqa
 print('myClue module path :{}'.format(myClue.__file__))  # 输出测试模块文件位置
+from myClue.core import logger  # noqa
 from myClue.tools.file import read_json_file_iter  # noqa
 from myClue.tools.text import remove_blank  # noqa
 
