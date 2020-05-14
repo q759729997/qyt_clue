@@ -3,15 +3,16 @@ TextCNN模型训练
 """
 import os
 import sys
+import time
 
 import torch
 
+from fastNLP import Const
 from fastNLP.embeddings import StaticEmbedding
 from fastNLP.models import CNNText
 from fastNLP import Trainer
 from fastNLP import CrossEntropyLoss
 from torch.optim import Adam
-from fastNLP import AccuracyMetric
 from fastNLP import Tester
 
 sys.path.insert(0, './')  # 定义搜索路径的优先顺序，序号从0开始，表示最大优先级
@@ -19,6 +20,8 @@ sys.path.insert(0, './')  # 定义搜索路径的优先顺序，序号从0开始
 import myClue  # noqa
 print('myClue module path :{}'.format(myClue.__file__))  # 输出测试模块文件位置
 from myClue.core import logger  # noqa
+from myClue.core.metrics import ClassifyFPreRecMetric  # noqa
+from myClue.core.callback import EarlyStopCallback  # noqa
 from myClue.tools.serialize import load_serialize_obj  # noqa
 from myClue.tools.serialize import save_serialize_obj  # noqa
 from myClue.tools.file import init_file_path  # noqa
@@ -27,6 +30,7 @@ from myClue.tools.file import init_file_path  # noqa
 if __name__ == "__main__":
     train_data_bundle_pkl_file = './data/tnews_public/train_data_bundle_char.pkl'
     model_path = './data/tnews_public/model_textcnn'
+    logger.add_file_handler(os.path.join(model_path, 'log_{}.txt'.format(time.strftime("%Y-%m-%d-%H-%M-%S", time.localtime()))))  # 日志写入文件
     char_vocab_pkl_file = os.path.join(model_path, 'vocab_char.pkl')
     target_vocab_pkl_file = os.path.join(model_path, 'target_char.pkl')
     init_file_path(model_path)
@@ -48,16 +52,29 @@ if __name__ == "__main__":
     logger.warn('训练超参数设定')
     loss = CrossEntropyLoss()
     optimizer = Adam([param for param in model.parameters() if param.requires_grad])
-    metric = AccuracyMetric()
+    # metric = AccuracyMetric()
+    metric = ClassifyFPreRecMetric(tag_vocab=data_bundle.get_vocab(Const.TARGET), only_gross=False)  # 若only_gross=False, 即还会返回各个label的metric统计值
     device = 'cuda' if torch.cuda.is_available() else 'cpu'  # 如果有gpu的话在gpu上运行，训练速度会更快
     logger.info('device:{}'.format(device))
     batch_size = 32
-    n_epochs = 5
-    trainer = Trainer(train_data=data_bundle.get_dataset('train'), model=model, loss=loss,
-                      optimizer=optimizer, batch_size=batch_size, n_epochs=n_epochs, dev_data=data_bundle.get_dataset('dev'),
-                      metrics=metric, device=device)
+    n_epochs = 10
+    early_stopping = 10
+    trainer = Trainer(
+        save_path=model_path,
+        train_data=data_bundle.get_dataset('train'),
+        model=model,
+        loss=loss,
+        optimizer=optimizer,
+        batch_size=batch_size,
+        n_epochs=n_epochs,
+        dev_data=data_bundle.get_dataset('dev'),
+        metrics=metric,
+        metric_key='f',
+        device=device,
+        callbacks=[EarlyStopCallback(early_stopping)])
     logger.warn('开始训练')
     trainer.train()
     logger.warn('训练后评估')
     tester = Tester(data=data_bundle.get_dataset('test'), model=model, metrics=metric, batch_size=64, device=device)
-    tester.test()
+    test_result = tester.test()
+    logger.info('评估结果：\n{}'.format(test_result))

@@ -36,5 +36,7 @@ if __name__ == "__main__":
                 else:
                     fw.write('{}\t{}\n'.format(label, text))
                 row_count += 1
+                if row_count == 1000:
+                    break
         logger.info('处理完毕，输出文件:{}'.format(txt_file_name))
         logger.info('数据量:{}'.format(row_count))
