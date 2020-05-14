@@ -22,7 +22,7 @@ if __name__ == "__main__":
         'dev': './data/tnews_public/dev.txt',
         'test': './data/tnews_public/dev.txt',
     }
-    train_data_bundle_pkl_file = './data/tnews_public/train_data_bundle.pkl'
+    train_data_bundle_pkl_file = './data/tnews_public/train_data_bundle_char.pkl'
     logger.info('数据加载')
     data_loader = THUCNewsLoader()
     data_bundle = data_loader.load(train_file_config)

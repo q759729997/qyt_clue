@@ -7,16 +7,19 @@
         # read_file_texts - 读取文件内容.
         # read_file_iter - 读取文件内容，使用迭代器返回.
         # read_json_file_iter - 读取json文件内容，使用迭代器返回.
+        # init_file_path - 文件路径初始化,若文件夹不存在则进行创建.
 """
 __all__ = [
     'get_file_names_recursion',
     'read_file_texts',
     'read_file_iter',
-    'read_json_file_iter'
+    'read_json_file_iter',
+    'init_file_path'
 ]
 import codecs
 import json
 import os
+import pathlib
 
 
 def get_file_names_recursion(path, file_names):
@@ -98,3 +101,12 @@ def read_json_file_iter(file_name):
             line = line.strip()
             if len(line) > 0:
                 yield json.loads(line)
+
+
+def init_file_path(file_path):
+    """ 文件路径初始化,若文件夹不存在则进行创建.
+
+        @params:
+            file_path - 文件路径.
+    """
+    pathlib.Path(file_path).mkdir(parents=True, exist_ok=True)
