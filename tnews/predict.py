@@ -55,7 +55,8 @@ if __name__ == "__main__":
     predictor = Predictor(model)
     with codecs.open(predict_output_json_file_name, mode='w', encoding='utf8') as fw_json, codecs.open(predict_output_file_name, mode='w', encoding='utf8') as fw:
         for i, row_json in enumerate(json_file_iter):
-            logger.info('predict row:{}'.format(i))
+            if i % 100 == 0:
+                logger.info('predict row:{}'.format(i))
             sentence = row_json.get('sentence', '')
             keywords = row_json.get('keywords', '')
             text = remove_blank('{}{}'.format(sentence, keywords))
