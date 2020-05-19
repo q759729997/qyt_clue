@@ -1,6 +1,7 @@
 # 命名实体识别
 
 - MSRA-NER (SIGHAN2006) dataset is released by MSRA for recognizing the names of people, locations and organizations in text.
+- http://sighan.cs.uchicago.edu/bakeoff2006/
 
 ## 榜单
 
