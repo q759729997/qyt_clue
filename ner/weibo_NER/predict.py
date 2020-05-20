@@ -1,5 +1,7 @@
 import os
 import sys
+import codecs
+import copy
 
 import torch
 from fastNLP.core import Const
@@ -19,6 +21,7 @@ if __name__ == "__main__":
     model_path = './data/weibo_NER/model_bilstm_crf_random_embed'
     model_file = os.path.join(model_path, 'best_BiLSTMCRF_f_2020-05-20-11-08-16-221138')
     train_file = './data/weibo_NER/example.conll'
+    predict_output_file = './data/weibo_NER/example_BiLSTMCRF_predict.conll'
     char_vocab_pkl_file = os.path.join(model_path, 'vocab_char.pkl')
     target_vocab_pkl_file = os.path.join(model_path, 'target_char.pkl')
     # 加载数据
@@ -26,6 +29,7 @@ if __name__ == "__main__":
     data_bundle = data_loader.load({'train': train_file})
     print_data_bundle(data_bundle)
     dataset = data_bundle.datasets['train']
+    dataset_original = copy.deepcopy(dataset)
     # 加载词表
     char_vocab = load_serialize_obj(char_vocab_pkl_file)
     logger.info('char_vocab:{}'.format(char_vocab))
@@ -49,7 +53,12 @@ if __name__ == "__main__":
     predict_output = predictor.predict(data=dataset, seq_len_field_name=Const.INPUT_LEN)
     pred_results = predict_output.get(Const.OUTPUT)
     # 预测结果解码
-    pred_targets = list()
-    for pred_result in pred_results:
-        pred_targets.append([target_vocab.to_word(pred_item) for pred_item in pred_result])
-    print(pred_targets)
+    with codecs.open(predict_output_file, mode='w', encoding='utf8') as fw:
+        for datarow, pred_result in zip(dataset_original, pred_results):
+            pred_result = [target_vocab.to_word(pred_item) for pred_item in pred_result]
+            row_chars = datarow[Const.RAW_CHAR]
+            for char, label in zip(row_chars, pred_result):
+                fw.write('{}\t{}\n'.format(char, label))
+            fw.write('\n')
+        # fw.write('\n')
+    logger.info('predict_output_file：{}'.format(predict_output_file))
