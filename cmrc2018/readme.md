@@ -1,5 +1,6 @@
 # 阅读理解
 
+- CMRC2018 是中文信息学会举办的评测，评测的任务是抽取类阅读理解。
 - 官方网站： <https://hfl-rc.github.io/cmrc2018/open_challenge/>
 - 语料github网站：<https://github.com/ymcui/cmrc2018>
 - 语料链接：<https://worksheets.codalab.org/worksheets/0x92a80d2fab4b4f79a2b4064f7ddca9ce/>
