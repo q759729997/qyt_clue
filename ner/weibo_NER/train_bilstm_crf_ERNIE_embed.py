@@ -45,7 +45,9 @@ if __name__ == "__main__":
     save_serialize_obj(target_vocab, target_vocab_pkl_file)
     logger.info('词典序列化:{}'.format(char_vocab_pkl_file))
     logger.warn('选择预训练词向量')
-    bert_embed = BertEmbedding(vocab=char_vocab, model_dir_or_name='cn-wwm', requires_grad=False)
+    # model_dir_or_name = 'cn-wwm'
+    model_dir_or_name = './data/embed/ERNIE_1.0_max-len-512-pytorch'
+    bert_embed = BertEmbedding(vocab=char_vocab, model_dir_or_name=model_dir_or_name, requires_grad=False)
     logger.warn('神经网络模型')
     model = BiLSTMCRF(embed=bert_embed, num_classes=len(target_vocab), num_layers=1, hidden_size=200, dropout=0.5,
                       target_vocab=target_vocab)
