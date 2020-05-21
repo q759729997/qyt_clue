@@ -38,6 +38,11 @@ Test data set ( test.conll )
 |:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
 |270|14842|111|170|19|9|47|39|17|
 
+## 参考文献：
+
+- Peng N, Dredze M. Named entity recognition for chinese social media with jointly trained embeddings[C]//Proceedings of the 2015 Conference on Empirical Methods in Natural Language Processing. 2015: 548-554.
+- Peng N, Dredze M. Improving named entity recognition for chinese social media with word segmentation representation learning[J]. arXiv preprint arXiv:1603.00786, 2016.
+
 **Reference**:   
 [Named Entity Recognition for Chinese Social Media
 with Jointly Trained Embeddings
