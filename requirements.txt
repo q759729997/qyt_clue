@@ -2,3 +2,4 @@ torch
 fastNLP
 transformers
 gensim
+scikit-learn
