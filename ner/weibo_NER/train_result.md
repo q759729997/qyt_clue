@@ -43,6 +43,17 @@
 | word2vec         | bilstm-crf | 3；3；3                 | 3              |
 | bert(不更新参数) | bilstm-crf | 345；345；345           | 345            |
 
+## 训练数据与开发数据重新划分
+
+- 训练结果
+
+| 词嵌入           | 模型       | 测试集表现（span F值；3次测试） | 平均F值 |
+| ---------------- | ---------- | ------------------------------- | ------- |
+| random           | bilstm-crf |                                 |         |
+| word2vec         | bilstm-crf | 0.484507；0.445802；0.485675    |         |
+| bert(不更新参数) | bilstm-crf |                                 |         |
+| bert(更新参数)   | bert-crf   | 0.713407                        |         |
+
 ## 论文内实验结果
 
 - Peng N, Dredze M. Named entity recognition for chinese social media with jointly trained embeddings[C]//Proceedings of the 2015 Conference on Empirical Methods in Natural Language Processing. 2015: 548-554.

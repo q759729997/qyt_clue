@@ -1,4 +1,5 @@
 import sys
+import random
 import codecs
 
 from gensim.models import KeyedVectors
@@ -17,12 +18,13 @@ from myClue.tools.decoder import decode_ner_tags  # noqa
 
 if __name__ == "__main__":
     """通过word2vec中最相似的词进行数据增强"""
+    random.seed(2020)
     # train_file = './data/weibo_NER/example.conll'
     # augmentation_file = './data/weibo_NER/example_augmentation.conll'
-    train_file = './data/weibo_NER/train.conll'
-    augmentation_file = './data/weibo_NER/train_augmentation.conll'
-    # train_file = './data/weibo_NER/example.conll'
-    # augmentation_file = './data/weibo_NER/example_augmentation.conll'
+    # train_file = './data/weibo_NER/train.conll'
+    # augmentation_file = './data/weibo_NER/train_augmentation.conll'
+    train_file = './data/weibo_NER/dev.conll'
+    augmentation_file = './data/weibo_NER/dev_augmentation.conll'
     logger.info('加载word2vec')
     word2vec_model_file = './data/embed/sgns.weibo.word/sgns.weibo.word'
     model = KeyedVectors.load_word2vec_format(word2vec_model_file, binary=False)
@@ -49,11 +51,14 @@ if __name__ == "__main__":
                 offset = entity['offset']
                 length = entity['length']
                 try:
-                    similarity_words = model.most_similar(word, topn=1)
+                    similarity_words = model.most_similar(word, topn=5)
+                    similarity_words = [similarity_word for similarity_word, similarity_score in similarity_words if similarity_score > 0.5]
                 except Exception:  # 处理word不在word2vec的情况
                     continue
-                similarity_word, similarity_score = similarity_words[0]
-                if word == similarity_word or similarity_score < 0.5:
+                if len(similarity_words) == 0:
+                    continue
+                similarity_word = random.choice(similarity_words)
+                if word == similarity_word:
                     continue
                 # 组装结果
                 augmentation_chars, augmentation_tags = list(), list()

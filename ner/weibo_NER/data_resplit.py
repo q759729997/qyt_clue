@@ -11,8 +11,6 @@ import myClue  # noqa
 print('myClue module path :{}'.format(myClue.__file__))  # 输出测试模块文件位置
 from myClue.core import logger  # noqa
 from myClue.core.utils import print_data_bundle  # noqa
-from myClue.tools.serialize import load_serialize_obj  # noqa
-from myClue.tools.decoder import decode_ner_tags  # noqa
 
 
 if __name__ == "__main__":
