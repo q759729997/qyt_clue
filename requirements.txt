@@ -1,5 +1,5 @@
-torch
-fastNLP
-transformers
-gensim
-scikit-learn
+torch>=1.4.0  # 深度学习框架pytorch
+fastNLP>=0.5.5  # 自然语言处理工具包
+transformers>=2.9.1  # 自然语言处理transformers系列预训练模型工具包
+gensim>=3.8.3  # 词向量，相似度工具包
+scikit-learn>=0.23.1  # 机器学习工具包
