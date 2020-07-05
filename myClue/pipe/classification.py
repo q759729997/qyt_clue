@@ -104,23 +104,32 @@ class THUCNewsPipe(_CLSPipe):
         data_bundle.get_vocab('trigrams')获取.
     """
 
-    def __init__(self, bigrams=False, trigrams=False):
+    def __init__(self, bigrams=False, trigrams=False, tokenizer='char'):
         super().__init__(tokenizer='cn-char', lang='cn')
 
         self.bigrams = bigrams
         self.trigrams = trigrams
+        self.tokenizer = tokenizer
 
     def _chracter_split(self, sent):
         return list(sent)
-        # return [w for w in sent]
+
+    def _white_space_split(self, sent):
+        return sent.split(' ')
 
     def _raw_split(self, sent):
         return sent.split()
 
     def _tokenize(self, data_bundle, field_name=Const.INPUT, new_field_name=None):
         new_field_name = new_field_name or field_name
-        for name, dataset in data_bundle.datasets.items():
-            dataset.apply_field(self._chracter_split, field_name=field_name, new_field_name=new_field_name)
+        if self.tokenizer == 'char':
+            for name, dataset in data_bundle.datasets.items():
+                dataset.apply_field(self._chracter_split, field_name=field_name, new_field_name=new_field_name)
+                dataset.copy_field(field_name=new_field_name, new_field_name='raw_words')
+        elif self.tokenizer == 'white_space':
+            for name, dataset in data_bundle.datasets.items():
+                dataset.apply_field(self._white_space_split, field_name=field_name, new_field_name=new_field_name)
+                dataset.copy_field(field_name=new_field_name, new_field_name='raw_words')
         return data_bundle
 
     def process(self, data_bundle: DataBundle):
