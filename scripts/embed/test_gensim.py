@@ -7,7 +7,8 @@ if __name__ == "__main__":
     安装gensim
     参考代码：https://radimrehurek.com/gensim/models/word2vec.html
     """
-    word2vec_model_file = './data/embed/sgns.weibo.word/sgns.weibo.word'
+    # word2vec_model_file = './data/embed/sgns.weibo.word/sgns.weibo.word'
+    word2vec_model_file = './data/UCAS_NLP_TC/train_words_embedding.txt'
     model = KeyedVectors.load_word2vec_format(word2vec_model_file, binary=False)
     results = model.most_similar('扎克伯格', topn=5)
     print(results)
