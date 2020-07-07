@@ -13,8 +13,10 @@ from myClue.tools.file import init_file_path  # noqa
 
 
 if __name__ == "__main__":
-    train_file = './data/UCAS_NLP_TC/traindata.txt'
-    output_file = './data/UCAS_NLP_TC/train_words.txt'
+    # train_file = './data/UCAS_NLP_TC/traindata.txt'
+    # output_file = './data/UCAS_NLP_TC/train_words.txt'
+    train_file = './data/UCAS_NLP_TC/data_11_baidu_basicwords/traindata.txt'
+    output_file = './data/UCAS_NLP_TC/train_baidu_basicwords.txt'
     texts = read_file_texts(train_file)
     with codecs.open(output_file, mode='w', encoding='utf8') as fw:
         words = OrderedDict()

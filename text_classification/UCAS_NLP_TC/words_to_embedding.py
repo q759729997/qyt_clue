@@ -11,8 +11,10 @@ from myClue.tools.file import init_file_path  # noqa
 
 
 if __name__ == "__main__":
-    train_words_file = './data/UCAS_NLP_TC/train_words.txt'
-    output_file = './data/UCAS_NLP_TC/train_words_embedding.txt'
+    # train_words_file = './data/UCAS_NLP_TC/train_words.txt'
+    # output_file = './data/UCAS_NLP_TC/train_words_embedding.txt'
+    train_words_file = './data/UCAS_NLP_TC/train_baidu_basicwords.txt'
+    output_file = './data/UCAS_NLP_TC/train_baidu_basicwords_embedding.txt'
     words = set(read_file_texts(train_words_file))
     print('words len:{}'.format(len(words)))
     with codecs.open(output_file, mode='w', encoding='utf8') as fw:
