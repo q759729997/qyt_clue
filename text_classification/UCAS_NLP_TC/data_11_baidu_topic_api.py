@@ -1,5 +1,5 @@
 """
-百度词法分析API：
+百度分类API：
 pip install baidu-aip
 """
 import time
@@ -20,11 +20,6 @@ API_KEY = baidu_config.API_KEY  # '你的 Api Key'
 SECRET_KEY = baidu_config.SECRET_KEY  # '你的 Secret Key'
 
 client = AipNlp(APP_ID, API_KEY, SECRET_KEY)
-
-# text = "百度是一家高科技公司"
-
-""" 调用词法分析 """
-# print(client.lexer(text))
 
 import myClue  # noqa
 print('myClue module path :{}'.format(myClue.__file__))  # 输出测试模块文件位置
